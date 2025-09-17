@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leaderboard</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head><body>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="courses.html">Courses</a>
+    <a href="contests.html">Contests</a>
+    <a href="ide.html">Open IDE</a>
+    <a class="active" href="leaderboard.html">Leaderboard</a>
+  </div>
+  <div class="container">
+    <div class="card"><h2>Top Scores</h2>
+      <table class="table" id="lb"><thead><tr><th>User</th><th>Score</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+<script>
+fetch('api/leaderboard').then(r=>r.json()).then(rows=>{
+  const tb=document.querySelector('#lb tbody');
+  rows.forEach(x=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${x.name}</td><td>${x.score}</td>`;
+    tb.appendChild(tr);
+  });
+});
+</script>
+</body></html>

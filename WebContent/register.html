@@ -1,0 +1,60 @@
+<!doctype html> 
+<html> 
+<head> 
+  <meta charset="utf-8"/> 
+  <meta name="viewport" content="width=device-width,initial-scale=1"/> 
+  <title>Register - OnlineLMS</title> 
+  <link rel="stylesheet" href="assets/styles.css"/> 
+</head> 
+<body> 
+  <div class="nav"> 
+    <a href="index.html">Home</a> 
+    <a href="dashboard.html">Dashboard</a> 
+    <a href="courses.html">Courses</a> 
+    <a href="contests.html">Contests</a> 
+    <a href="ide.html">Open IDE</a> 
+    <a href="leaderboard.html">Leaderboard</a> 
+    <a href="login.html">Login</a> 
+  </div> 
+  <div class="container"> 
+    <div class="card"> 
+      <h2>Create account</h2> 
+      <input id="name" class="input" placeholder="Full name" /> 
+      <input id="email" class="input" placeholder="Email" style="margin-top:8px"/> 
+      <input id="password" class="input" type="password" placeholder="Password" style="margin-top:8px"/> 
+      <button class="btn" style="margin-top:12px" onclick="doRegister()">Register</button> 
+      <small id="msg" style="display:block;margin-top:10px"></small> 
+    </div> 
+  </div> 
+
+<script> 
+async function doRegister() { 
+  const msg = document.getElementById('msg'); 
+  msg.textContent = 'Registering...'; 
+  const body = { 
+    action: 'register',
+    name: document.getElementById('name').value.trim(), 
+    email: document.getElementById('email').value.trim(), 
+    password: document.getElementById('password').value 
+  }; 
+  const endpoint = '/OnlineLMS/api/auth'; 
+
+  try { 
+    const res = await fetch(endpoint, { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, 
+      body: new URLSearchParams(body) 
+    }); 
+    const text = await res.text(); 
+    if (res.ok) { 
+      msg.textContent = 'Registered — go to Login.'; 
+    } else { 
+      msg.textContent = 'Error: ' + text; 
+    } 
+  } catch (e) { 
+    msg.textContent = 'Could not reach server. Make sure Tomcat is running and servlets are deployed.'; 
+  } 
+} 
+</script> 
+</body> 
+</html>

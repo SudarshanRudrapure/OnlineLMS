@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Open IDE</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head><body>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="courses.html">Courses</a>
+    <a href="contests.html">Contests</a>
+    <a class="active" href="ide.html">Open IDE</a>
+    <a href="leaderboard.html">Leaderboard</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>JS Playground</h2>
+      <textarea id="code" class="input" rows="10">// Write JS here
+console.log('Hello from IDE');</textarea>
+      <button class="btn" style="margin-top:8px" onclick="run()">Run</button>
+      <pre class="card" id="out" style="min-height:120px"></pre>
+    </div>
+  </div>
+<script>
+function run(){
+  const out=document.getElementById('out');
+  out.textContent='';
+  const log=console.log; const errs=console.error;
+  console.log=(...a)=>{out.textContent+=a.join(' ')+'\n';};
+  console.error=(...a)=>{out.textContent+='ERROR: '+a.join(' ')+'\n';};
+  try{ new Function(document.getElementById('code').value)(); }
+  catch(e){ console.error(e); }
+  console.log=log; console.error=errs;
+}
+</script>
+</body></html>
