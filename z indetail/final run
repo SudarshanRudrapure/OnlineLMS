@@ -1,0 +1,109 @@
+
+
+## 🔹 Step 1. Clean old deployment
+
+Remove the previous deployed app from Tomcat:
+
+```powershell
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS"
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\work\Catalina\localhost\OnlineLMS" -ErrorAction SilentlyContinue
+```
+
+---
+
+## 🔹 Step 2. Compile Java Servlets
+
+Go to your **project root**:
+
+```powershell
+
+```
+
+Compile all Java files and put class files into `WebContent\WEB-INF\classes`:
+
+```powershell
+
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+
+```
+
+👉 This creates `.class` files inside:
+`C:\OnlineLMS\WebContent\WEB-INF\classes\com\lms`
+
+---
+
+## 🔹 Step 3. Copy WebContent to Tomcat
+
+Deploy the app by copying your **WebContent** into Tomcat’s `webapps`:
+
+```powershell
+Copy-Item -Recurse -Force "C:\OnlineLMS\WebContent" "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS"
+
+```
+
+---
+
+## 🔹 Step 4. Start Tomcat
+
+Run Tomcat:
+
+cd C:\Tomcat\apache-tomcat-10.1.44\bin
+.\startup.bat
+
+```
+
+---
+
+## 🔹 Step 5. Open in Browser
+
+Go to:
+
+```
+http://localhost:8080/OnlineLMS/index.html
+```
+
+---
+
+✅ Flow after setup:
+
+* Open **register.html** → Register user → Redirects to **login.html** (alert: registered).
+* Open **login.html** → Enter credentials → Redirects to **dashboard.jsp** (alert: logged in).
+
+---
+
+
+
+in one step
+
+
+# 1. Clean old deployment
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\work\Catalina\localhost\OnlineLMS" -ErrorAction SilentlyContinue
+
+# 2. Go to source folder
+cd C:\OnlineLMS\src
+
+# 3. Compile Java files
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+
+# 4. Copy WebContent to Tomcat
+Copy-Item -Recurse -Force "C:\OnlineLMS\WebContent\*" "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS\"
+
+# 5. Start Tomcat
+cd C:\Tomcat\apache-tomcat-10.1.44\bin
+.\startup.bat
+
+
+_____last final final_____
+
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "C:\Tomcat\apache-tomcat-10.1.44\work\Catalina\localhost\OnlineLMS" -ErrorAction SilentlyContinue
+cd C:\OnlineLMS\src
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+New-Item -ItemType Directory -Force -Path "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS" | Out-Null
+Copy-Item -Recurse -Force "C:\OnlineLMS\WebContent\*" "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS\"
+cd C:\Tomcat\apache-tomcat-10.1.44\bin
+.\startup.bat
+
+
+

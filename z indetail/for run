@@ -118,11 +118,42 @@ Every time you modify servlets (`.java` files) or HTML files:
 or
 
          cd C:\OnlineLMS\src
-javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\servlet-api.jar;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+// not use ---javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\servlet-api.jar;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
 
-xcopy /E /I /Y C:\OnlineLMS\WebContent C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS
+
+         cd C:\OnlineLMS\src
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+
+or 
+
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;C:\OnlineLMS\WebContent\WEB-INF\lib\*" -d C:\OnlineLMS\WebContent\WEB-INF\classes C:\OnlineLMS\src\com\lms\*.java
+
+
+xcopy /E /I /Y "C:\OnlineLMS\WebContent" "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS"
+
 
 cd C:\Tomcat\apache-tomcat-10.1.44\bin
-shutdown.bat
-.\startup.bat
+or 
+C:\Tomcat\apache-tomcat-10.1.44\bin\startup.bat
 
+.\shutdown.bat
+.\startup.bat 
+
+
+
+
+
+
+
+
+last copy for explaination
+
+# Compile
+cd C:\OnlineLMS\src
+javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\*;C:\OnlineLMS\WebContent\WEB-INF\lib\*;." -d C:\OnlineLMS\WebContent\WEB-INF\classes com\lms\*.java
+
+# Deploy
+xcopy /E /I /Y "C:\OnlineLMS\WebContent" "C:\Tomcat\apache-tomcat-10.1.44\webapps\OnlineLMS"
+
+# Run Tomcat
+C:\Tomcat\apache-tomcat-10.1.44\bin\startup.bat

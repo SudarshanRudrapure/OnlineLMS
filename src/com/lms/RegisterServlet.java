@@ -1,51 +1,48 @@
-// package com.lms;
+package com.lms;
 
-// import java.io.*;
-// import javax.servlet.*;
-// import javax.servlet.http.*;
-// import java.sql.*;   
-// import com.lms.DBConnection;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-
-
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import java.io.*;
-import com.lms.DBConnection;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-
-
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         try (Connection conn = DBConnection.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO users (name, email, password) VALUES (?, ?, ?)"
-            );
-            ps.setString(1, name);
-            ps.setString(2, email);
-            ps.setString(3, password);
+            String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, password); // ⚠️ In production, hash the password!
+            stmt.executeUpdate();
 
-            int rows = ps.executeUpdate();
+            // ✅ Redirect to login page with success flag
+            response.sendRedirect("login.html?registered=1");
 
-            PrintWriter out = response.getWriter();
-            if (rows > 0) {
-                out.println("Registration successful!");
-            } else {
-                out.println("Registration failed!");
-            }
         } catch (Exception e) {
-            throw new ServletException("Database error", e);
+            e.printStackTrace();
+            // Redirect back to register page with error flag
+            response.sendRedirect("register.html?error=1");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.sendRedirect("register.html");
     }
 }

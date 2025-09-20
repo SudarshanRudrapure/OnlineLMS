@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,21 +27,20 @@ public class LeaderboardServlet extends HttpServlet {
             while (rs.next()) {
                 if (!first) json.append(",");
                 json.append("{\"name\":\"")
-                    .append(rs.getString("name"))
-                    .append("\",\"score\":")
-                    .append(rs.getInt("score"))
-                    .append("}");
+                        .append(rs.getString("name"))
+                        .append("\",\"score\":")
+                        .append(rs.getInt("score"))
+                        .append("}");
                 first = false;
             }
             json.append("]");
 
-            JsonUtil.sendJson(resp, json.toString());
+            resp.setContentType("application/json");
+            resp.getWriter().write(json.toString());
+
         } catch (Exception e) {
-            JsonUtil.sendJson(resp, "{\"error\":\"" + e.getMessage().replace("\"","'") + "\"}");
+            resp.setContentType("application/json");
+            resp.getWriter().write("{\"error\":\"" + e.getMessage().replace("\"", "'") + "\"}");
         }
     }
 }
-
-
-
-//for run---javac -cp "C:\Tomcat\apache-tomcat-10.1.44\lib\servlet-api.jar;C:\OnlineLMS\WebContent\WEB-INF\lib\json-20240303.jar;." com/lms/*.java

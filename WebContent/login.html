@@ -1,74 +1,34 @@
-<!doctype html> 
-<html> 
-<head> 
-  <meta charset="utf-8"/> 
-  <meta name="viewport" content="width=device-width,initial-scale=1"/> 
-  <title>Login - OnlineLMS</title> 
-  <link rel="stylesheet" href="assets/styles.css"/> 
-</head> 
-<body> 
-  <div class="nav"> 
-    <a href="index.html">Home</a> 
-    <a href="dashboard.html">Dashboard</a> 
-    <a href="courses.html">Courses</a> 
-    <a href="contests.html">Contests</a> 
-    <a href="ide.html">Open IDE</a> 
-    <a href="leaderboard.html">Leaderboard</a> 
-    <a href="register.html">Register</a> 
-  </div> 
-
-  <div class="container"> 
-    <div class="card"> 
-      <h2>Sign in</h2> 
-      <input id="email" class="input" placeholder="Email" /> 
-      <input id="password" class="input" type="password" placeholder="Password" style="margin-top:8px"/> 
-      <button class="btn" style="margin-top:12px" onclick="doLogin()">Login</button> 
-      <small id="msg" style="display:block;margin-top:10px"></small> 
-    </div> 
-  </div> 
-
-<script> 
-async function tryPost(endpoints, body) { 
-  for (const ep of endpoints) { 
-    try { 
-      const res = await fetch(ep, { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, 
-        body: new URLSearchParams(body) 
-      }); 
-      if (res.status === 404) continue; 
-      return res; 
-    } catch (e) { 
-      continue; 
-    } 
-  } 
-  throw new Error('No endpoint reachable'); 
-} 
-
-async function doLogin(){ 
-  const msg = document.getElementById('msg'); 
-  msg.textContent = 'Signing in...'; 
-  const body = { 
-    action: 'login',
-    email: document.getElementById('email').value.trim(), 
-    password: document.getElementById('password').value 
-  }; 
-  const endpoints = [ 
-    'api/auth/login', '/auth/login', '/api/auth/login', '/auth/login' 
-  ]; 
-
-  try { 
-    const res = await tryPost(endpoints, body); 
-    const txt = await res.text(); 
-    if (res.ok) { 
-      msg.textContent = 'Logged in — open Dashboard.'; 
-    } else { 
-      msg.textContent = 'Login failed: ' + txt; 
-    } 
-  } catch (e) { 
-    msg.textContent = 'Could not reach server. Make sure Tomcat is running and servlets are deployed.'; 
-  } 
-} 
-</script> 
-</body> 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("registered") === "1") {
+        alert("✅ Successfully registered! Please log in.");
+      }
+      if (params.get("error") === "1") {
+        alert("❌ Invalid email or password. Try again.");
+      }
+      if (params.get("error") === "2") {
+        alert("⚠️ Something went wrong. Please try later.");
+      }
+    };
+  </script>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2>Login</h2>
+    <form action="login" method="post">
+      <input class="input" type="email" name="email" placeholder="Email" required><br><br>
+      <input class="input" type="password" name="password" placeholder="Password" required><br><br>
+      <button class="btn" type="submit">Login</button>
+    </form>
+    <p>Don’t have an account? <a href="register.html">Register</a></p>
+  </div>
+</div>
+</body>
 </html>

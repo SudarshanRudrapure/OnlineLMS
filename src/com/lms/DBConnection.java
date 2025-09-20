@@ -2,15 +2,19 @@ package com.lms;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL =
-        "jdbc:mysql://localhost:3306/online_lms?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "lms_user";   // <— from step 1
-    private static final String PASSWORD = "lms_pass"; // <— from step 1
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/online_lms";
+    private static final String USER = "root";
+    private static final String PASSWORD = "sudir@117";
 
-    public static Connection getConnection() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+    public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
