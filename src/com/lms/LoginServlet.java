@@ -36,20 +36,18 @@ public class LoginServlet extends HttpServlet {
 
                 // Create session
                 HttpSession session = request.getSession();
-                session.setAttribute("user", name);  // store username
-                session.setAttribute("email", email); // optional
+                session.setAttribute("user", name);
+                session.setAttribute("email", email);
 
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("success");
+                // 🔑 Redirect to dashboard.jsp (or index.jsp)
+                response.sendRedirect("dashboard.jsp");
             } else {
-                // ❌ Invalid login
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Invalid email or password");
+                // ❌ Invalid login → back to login page
+                response.sendRedirect("login.html?error=1");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Server error: " + e.getMessage());
+            response.sendRedirect("login.html?error=2");
         }
     }
 }
